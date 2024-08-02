@@ -21,6 +21,7 @@ const userService = require("./user-service.js");
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
+const { response } = require('express');
 
 const HTTP_PORT = process.env.PORT || 8080;
 
@@ -51,8 +52,11 @@ let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
 passport.use(strategy);
 app.use(passport.initialize());
 
+app.get("/", (req,res) =>{
+    res.send("gello")
+})
+
 app.post("/register", (req, res) => {
-    console.log(req);
     userService.registerUser(req.body)
     .then((msg) => {
         res.json({ "message": msg });
